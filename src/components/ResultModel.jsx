@@ -1,13 +1,30 @@
-export default function ResultModel({ref,result,targetTime}){
-    return(
-    <dialog ref = {ref} className="result-modal">
-        <h2>you {result}</h2>
-        <p>The target time was <strong>{targetTime} seconds</strong></p>
-        <p>You stopped time timer with <strong>X seconds left</strong></p>
-        <form method="dialog"> {/*method dialog is used because when we click on this botton entire dialog tag will close*/}
-            <button>Close</button>
+import { forwardRef } from "react";
 
-        </form>
+const ResultModel = forwardRef(function ResultModel(
+  { targetTime, remainingTime },
+  ref
+) {
+  const userLost = remainingTime <= 0;
+  const formattedRemainingTime = (remainingTime / 1000).toFixed(2);
+
+  return (
+    <dialog ref={ref} className="result-modal">
+      <h2>{userLost ? "You Lost" : "You Won"}</h2>
+
+      <p>
+        The target time was <strong>{targetTime} seconds.</strong>
+      </p>
+
+      <p>
+        You stopped the timer with{" "}
+        <strong>{formattedRemainingTime} seconds left.</strong>
+      </p>
+
+      <form method="dialog">
+        <button>Close</button>
+      </form>
     </dialog>
-    );
-}
+  );
+});
+
+export default ResultModel;
